@@ -14,34 +14,54 @@ public class UrlController {
     @Autowired
     UrlService urlService;
 
-    @PostMapping("/shorten/")
+    @PostMapping("/shorten")
     public ResponseEntity<UrlResponseDto> createUrl(@RequestBody UrlRequest urlRequest){
-      UrlResponseDto urlResponseDto=  urlService.createShort(urlRequest.getUrl());
-      return new ResponseEntity<>(urlResponseDto, HttpStatus.ACCEPTED);
+        try {
+            UrlResponseDto urlResponseDto = urlService.createShort(urlRequest.getUrl());
+            return new ResponseEntity<>(urlResponseDto, HttpStatus.ACCEPTED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
-    @GetMapping("/shortUrl")
-    public ResponseEntity<UrlResponseDto>  getOriginalUrl(@RequestParam(name = "shortUrl") String shortUrl){
-        UrlResponseDto urlResponseDto=  urlService.getOriginal(shortUrl);
-        return new ResponseEntity<>(urlResponseDto, HttpStatus.ACCEPTED);
+    @GetMapping("/shorten/{shortUrl}")
+    public ResponseEntity<UrlResponseDto>  getOriginalUrl(@PathVariable(name = "shortUrl") String shortUrl){
+        try {
+            UrlResponseDto urlResponseDto = urlService.getOriginal(shortUrl);
+            return new ResponseEntity<>(urlResponseDto, HttpStatus.ACCEPTED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
-    @PutMapping("/shortUrl")
-    public ResponseEntity<UrlResponseDto>  updatelUrl(@RequestParam(name = "shortUrl") String shortUrl,@RequestBody UrlRequest urlRequest){
-        UrlResponseDto urlResponseDto=  urlService.updateUrl(urlRequest.getUrl(), shortUrl);
-        return new ResponseEntity<>(urlResponseDto, HttpStatus.ACCEPTED);
+    @PutMapping("/shorten/{shortUrl}")
+    public ResponseEntity<UrlResponseDto>  updatelUrl(@PathVariable(name = "shortUrl") String shortUrl,@RequestBody UrlRequest urlRequest){
+        try {
+            UrlResponseDto urlResponseDto = urlService.updateUrl(urlRequest.getUrl(), shortUrl);
+            return new ResponseEntity<>(urlResponseDto, HttpStatus.ACCEPTED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
-    @DeleteMapping("/shortUrl")
-    public ResponseEntity deleteUrl(@RequestParam(name = "shortUrl") String shortUrl){
-          urlService.deleteUrl(shortUrl);
-        return new ResponseEntity<>( HttpStatus.ACCEPTED);
+    @DeleteMapping("/shorten/{shortUrl}")
+    public ResponseEntity deleteUrl(@PathVariable(name = "shortUrl") String shortUrl){
+        try {
+            urlService.deleteUrl(shortUrl);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
-    @GetMapping("/shortUrl/stats")
-    public ResponseEntity<UrlResponseDto>  getOriginalUrl(@RequestParam(name = "shortUrl") String shortUrl,
-                                                          @RequestParam(name = "stats")String count){
-        UrlResponseDto urlResponseDto=  urlService.getStats(shortUrl);
-        return new ResponseEntity<>(urlResponseDto, HttpStatus.ACCEPTED);
+    @GetMapping("/shorten/{shortUrl}/{stats}")
+    public ResponseEntity<UrlResponseDto>  getOriginalUrl(@PathVariable(name = "shortUrl") String shortUrl,
+                                                          @PathVariable(name = "stats")String count){
+        try {
+            UrlResponseDto urlResponseDto = urlService.getStats(shortUrl);
+            return new ResponseEntity<>(urlResponseDto, HttpStatus.ACCEPTED);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.annotation.Nullable;
 import java.time.LocalDate;
 
 @AllArgsConstructor
@@ -13,15 +14,15 @@ import java.time.LocalDate;
 @Builder
 @Data
 public class UrlResponseDto {
-    @JsonIgnore
+    @Nullable
     private Long id;
     private String url;
-    @JsonIgnore
+    @Nullable
     private String shortUrl;
-    @JsonIgnore
+    @Nullable
     private LocalDate createdAt;
-    @JsonIgnore
+    @Nullable
     private LocalDate updatedAt;
-    @JsonIgnore
+    @Nullable
     private Long count;
 }
