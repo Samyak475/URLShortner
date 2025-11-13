@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+
 @RestController()
 public class UrlController {
 
@@ -61,6 +63,16 @@ public class UrlController {
             return new ResponseEntity<>(urlResponseDto, HttpStatus.ACCEPTED);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/{shorUrl}")
+    public ResponseEntity<Void> routeToOriganal(@PathVariable(name = "shortUrl") String shortUrl){
+        try{
+          URI redirectUrl =URI.create(urlService.getOriginal(shortUrl).getUrl());
+          return ResponseEntity.status(HttpStatus.FOUND).location(redirectUrl).build();
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
